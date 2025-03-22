@@ -1,14 +1,14 @@
 //
-//  SignupScreen.swift
+//  LoginScreen.swift
 //  MedBook
 //
-//  Created by Adarsh Ranjan on 21/03/25.
+//  Created by Adarsh Ranjan on 22/03/25.
 //
 
 import SwiftUI
 
-struct SignupScreen: View {
-    @StateObject private var viewModel = SignupViewModel()
+struct LoginScreen: View {
+    @StateObject private var viewModel = LoginViewModel()
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -23,11 +23,10 @@ struct SignupScreen: View {
             }
             .padding(.bottom, 10)
             
-            Text("Welcome")
+            Text("Welcome,")
                 .font(.largeTitle).bold()
-            Text("Sign up to continue")
-                .font(.headline)
-                .foregroundColor(.gray)
+            Text("log in to continue")
+                .font(.headline).foregroundColor(.gray)
             
             AppThemeTextField(
                 title: "Email",
@@ -47,20 +46,16 @@ struct SignupScreen: View {
                 errorMessage: viewModel.passwordErrorMessage
             )
             
-            VStack(alignment: .leading, spacing: 5) {
-                RequirementText(text: "At least 8 characters", isMet: viewModel.passwordRequirements[0])
-                RequirementText(text: "Must contain an uppercase letter", isMet: viewModel.passwordRequirements[1])
-                RequirementText(text: "Contains a special character", isMet: viewModel.passwordRequirements[2])
-            }
-            
             Spacer()
             
             AppThemeButton(
-                title: "Let's go",
+                title: "Login",
                 hasArrow: true,
                 isDisabled: !viewModel.isValid,
                 buttonType: .coloured(fillColor: .blue, disabled: !viewModel.isValid),
-                action: { /* Handle signup action */ }
+                action: {
+                    // Handle login action
+                }
             )
         }
         .padding()
@@ -68,8 +63,8 @@ struct SignupScreen: View {
     }
 }
 
-struct SignupScreen_Previews: PreviewProvider {
+struct LoginScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SignupScreen()
+        LoginScreen()
     }
 }
