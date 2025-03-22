@@ -15,3 +15,5 @@ class LandingViewModel: ObservableObject {
         navigationPath.append(destination)
     }
 }
+
+
