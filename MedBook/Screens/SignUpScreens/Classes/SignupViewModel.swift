@@ -36,6 +36,24 @@ class SignupViewModel: SignupViewModelProtocol {
     @Published private(set) var showPasswordError: Bool = false
     @Published private(set) var passwordErrorMessage: String = ""
     
+    private let countriesService: CountriesServiceProtocol
+    
+    init(countriesService: CountriesServiceProtocol) {
+        self.countriesService = countriesService
+        getCountries()
+    }
+    
+    func getCountries() {
+        countriesService.getCountries { result in
+            switch result {
+            case .success(let response):
+                print("Countries fetched successfully: \(response.data)")
+            case .failure(let error):
+                print("Failed to fetch countries: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     private func validateForm() {
         let isEmailValid = email.contains("@") && email.contains(".")
         showEmailError = !isEmailValid && !email.isEmpty

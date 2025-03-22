@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct SignupScreen: View {
-    @StateObject private var viewModel = SignupViewModel()
+    @StateObject private var viewModel = SignupViewModel(
+        countriesService: CountriesService()
+    )
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
