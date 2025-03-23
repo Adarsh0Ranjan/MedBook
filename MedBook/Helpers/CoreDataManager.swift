@@ -43,7 +43,7 @@ class CoreDataManager {
     }
 
     // MARK: - Fetch User by Email
-    private func fetchUser(email: String) -> UserEntity? {
+    func fetchUser(email: String) -> UserEntity? {
         let request: NSFetchRequest<UserEntity> = UserEntity.fetchRequest()
         request.predicate = NSPredicate(format: "email == %@", email)
 
