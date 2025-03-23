@@ -5,6 +5,7 @@
 //  Created by Adarsh Ranjan on 23/03/25.
 //
 
+
 import SwiftUI
 
 struct HeaderView: View {
@@ -21,10 +22,8 @@ struct HeaderView: View {
             
             Spacer()
             
-            // Bookmark Button
-            Button(action: {
-                // viewModel.showBookmarks.toggle()
-            }) {
+            // Bookmark Button with Navigation
+            NavigationLink(destination: BookmarkedBooksView()) {
                 Image(systemName: "bookmark.fill")
                     .foregroundStyle(Color.green)
             }

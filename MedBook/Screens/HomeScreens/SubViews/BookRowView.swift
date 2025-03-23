@@ -11,6 +11,7 @@ struct BookRowView: View {
     let book: Book
     @State private var bookImage: UIImage? = nil
     @State private var isBookmarked: Bool = false
+    var onBookmarkRemoved: (() -> Void)?
     
     var body: some View {
         HStack(spacing: 12) {
@@ -98,6 +99,7 @@ struct BookRowView: View {
         } else {
             CoreDataManager.shared.removeBook(book, forUser: "02130adarsh@gmail.com")
             isBookmarked = false
+            onBookmarkRemoved?()
             print("Removed from bookmarks: \(book.title)")
         }
     }
@@ -105,35 +107,6 @@ struct BookRowView: View {
     // Function to check if the book is already bookmarked
     private func checkIfBookmarked() {
         isBookmarked = CoreDataManager.shared.isBookmarked(book, forUser: "02130adarsh@gmail.com")
-    }
-}
-
-struct BookmarkedBooksView: View {
-    @StateObject var viewModel = BookmarkedBooksViewModel()
-    
-    var body: some View {
-        NavigationView {
-            List(viewModel.bookmarkedBooks, id: \..key) { book in
-                BookRowView(book: book)
-            }
-            .navigationTitle("Bookmarked Books")
-        }
-    }
-    
-}
-
-import SwiftUI
-import Combine
-
-class BookmarkedBooksViewModel: ObservableObject {
-    @Published var bookmarkedBooks: [Book] = []
-    
-    init() {
-        loadBookmarkedBooks()
-    }
-    
-    func loadBookmarkedBooks() {
-        bookmarkedBooks = CoreDataManager.shared.fetchBooks(forUser: "02130adarsh@gmail.com")
     }
 }
 
