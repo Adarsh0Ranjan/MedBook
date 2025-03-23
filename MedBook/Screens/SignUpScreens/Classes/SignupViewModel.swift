@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol SignupViewModelProtocol: ObservableObject {
     var email: String { get set }
@@ -42,10 +43,29 @@ class SignupViewModel: SignupViewModelProtocol {
     @Published private(set) var countries: [String] = []
     
     private let countriesService: CountriesServiceProtocol
+    private let coreDataManager: CoreDataManager
     
-    init(countriesService: CountriesServiceProtocol) {
+    init(countriesService: CountriesServiceProtocol, coreDataManager: CoreDataManager = .shared) {
         self.countriesService = countriesService
+        self.coreDataManager = coreDataManager
         fetchCountriesAndUserLocation()
+    }
+    
+    func signup() {
+        guard isValid else {
+            return
+        }
+        
+        if coreDataManager.isUserExists(email: email) {
+            AlertView.show(
+                alertType: .withTitleAndMessageOneButton,
+                alertTitle: "Signup Failed",
+                alertMessage: "A user with this email already exists.",
+                primaryButton: .default(Text("OK"))
+            )
+        } else {
+            coreDataManager.saveUser(email: email, password: password, country: selectedCountry)
+        }
     }
     
     // MARK: - Fetch Countries with Closure

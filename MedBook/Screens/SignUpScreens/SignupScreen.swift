@@ -78,7 +78,9 @@ struct SignupScreen: View {
                 hasArrow: true,
                 isDisabled: !viewModel.isValid,
                 buttonType: .coloured(fillColor: .blue, disabled: !viewModel.isValid),
-                action: { /* Handle signup action */ }
+                action: {
+                    viewModel.signup()
+                }
             )
         }
         .padding()

@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     var keyWindow: UIWindow?
     var progressLoaderWindow: UIWindow?
+    var alertViewWindow: UIWindow?
 
     func scene(
         _ scene: UIScene,
@@ -22,6 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         setupKeyWindow(in: windowScene)
         setupProgressLoaderWindow(in: windowScene)
+        setupAlertViewWindow(in: windowScene)
     }
     
     func setupKeyWindow(in scene: UIWindowScene) {
@@ -46,6 +48,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.progressLoaderWindow = progressLoaderWindow
     }
     
+    func setupAlertViewWindow(in scene: UIWindowScene) {
+        let alertViewWindow = PassThroughWindow(windowScene: scene)
+        let alertViewController = HostingController(
+            rootView: AlertView()
+        )
+        alertViewController.view.backgroundColor = .clear
+        alertViewWindow.rootViewController = alertViewController
+        alertViewWindow.isHidden = false
+        self.alertViewWindow = alertViewWindow
+    }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         print("Scene disconnected.")
