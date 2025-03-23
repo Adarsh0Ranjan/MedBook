@@ -54,7 +54,7 @@ struct LoginScreen: View {
                 isDisabled: !viewModel.isValid,
                 buttonType: .coloured(fillColor: .blue, disabled: !viewModel.isValid),
                 action: {
-                    // Handle login action
+                    viewModel.handleLogin()
                 }
             )
         }

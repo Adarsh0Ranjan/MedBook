@@ -53,6 +53,12 @@ class SignupViewModel: SignupViewModelProtocol {
     
     func signup() {
         guard isValid else {
+            AlertView.show(
+                alertType: .withTitleAndMessageOneButton,
+                alertTitle: "Invalid Form",
+                alertMessage: "Please enter a valid email and password.",
+                primaryButton: .default(Text("OK"))
+            )
             return
         }
         
@@ -65,9 +71,12 @@ class SignupViewModel: SignupViewModelProtocol {
             )
         } else {
             coreDataManager.saveUser(email: email, password: password, country: selectedCountry)
+            UserDefaultsHelper.saveBool(key: .isUserLoggedIn, value: true)
+            AppRootView.updateRootViewTo(.homeScreen)
         }
     }
-    
+
+
     // MARK: - Fetch Countries with Closure
     func fetchCountries(completion: @escaping ([String]?) -> Void) {
         countriesService.getCountries { result in

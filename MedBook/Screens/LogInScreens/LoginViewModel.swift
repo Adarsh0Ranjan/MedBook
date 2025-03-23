@@ -59,7 +59,16 @@ class LoginViewModel: LoginViewModelProtocol {
         isValid = !showEmailError && !showPasswordError
     }
     
-    func login(completion: @escaping (Bool) -> Void) {
+    func handleLogin() {
+        login { success in
+            if success {
+                UserDefaultsHelper.saveBool(key: .isUserLoggedIn, value: true)
+                AppRootView.updateRootViewTo(.homeScreen)
+            }
+        }
+    }
+
+    internal func login(completion: @escaping (Bool) -> Void) {
         guard isValid else {
             AlertView.show(
                 alertType: .withTitleAndMessageOneButton,
