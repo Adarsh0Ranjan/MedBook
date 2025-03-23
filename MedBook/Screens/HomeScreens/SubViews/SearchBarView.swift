@@ -23,9 +23,6 @@ struct SearchBarView: View {
                     .foregroundColor(.gray)
                 
                 TextField("Search for books", text: $searchText)
-                    .onChange(of: searchText) { _ in
-                        onSearch()
-                    }
             }
             .padding()
             .background(Color.gray.opacity(0.2))
