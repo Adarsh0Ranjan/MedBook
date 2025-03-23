@@ -20,8 +20,11 @@ struct HomeView: View {
                 SearchBarView(searchText: $viewModel.searchText, onSearch: viewModel.debouncedSearch)
                 
                 // Sorting Options
-                SortOptionsView(selectedSortOption: $viewModel.selectedSortOption) {
-                    viewModel.sortBooks()
+                
+                if !viewModel.books.isEmpty {
+                    SortOptionsView(selectedSortOption: $viewModel.selectedSortOption) {
+                        viewModel.sortBooks()
+                    }
                 }
                 
                 // Books List

@@ -17,6 +17,8 @@ struct SortOptionsView: View {
                 .font(.subheadline)
                 .fontWeight(.semibold)
             
+            Spacer(minLength: 0)
+            
             ForEach(SortOption.allCases, id: \.self) { option in
                 Button(action: {
                     selectedSortOption = option
@@ -26,7 +28,9 @@ struct SortOptionsView: View {
                         .padding(6)
                         .background(selectedSortOption == option ? Color.gray.opacity(0.3) : Color.clear)
                         .cornerRadius(6)
+                        .foregroundColor(Color.black)
                 }
+                Spacer(minLength: 0)
             }
         }
         .padding(.horizontal)
