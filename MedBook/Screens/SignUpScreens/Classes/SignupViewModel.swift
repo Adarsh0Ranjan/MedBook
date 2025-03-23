@@ -16,6 +16,8 @@ protocol SignupViewModelProtocol: ObservableObject {
     var emailErrorMessage: String { get }
     var showPasswordError: Bool { get }
     var passwordErrorMessage: String { get }
+    var selectedCountry: String { get set }
+    var countries: [String] { get }
 }
 
 class SignupViewModel: SignupViewModelProtocol {
@@ -36,24 +38,46 @@ class SignupViewModel: SignupViewModelProtocol {
     @Published private(set) var showPasswordError: Bool = false
     @Published private(set) var passwordErrorMessage: String = ""
     
+    @Published var selectedCountry: String = "Select a country"
+    @Published private(set) var countries: [String] = []
+    
     private let countriesService: CountriesServiceProtocol
     
     init(countriesService: CountriesServiceProtocol) {
         self.countriesService = countriesService
         getCountries()
+        getUserLocation()
     }
     
     func getCountries() {
         countriesService.getCountries { result in
             switch result {
             case .success(let response):
-                print("Countries fetched successfully: \(response.data)")
+                let countryNames = response.data.values.map { $0.country }
+                DispatchQueue.main.async {
+                    self.countries = countryNames.sorted()
+                }
             case .failure(let error):
                 print("Failed to fetch countries: \(error.localizedDescription)")
             }
         }
     }
     
+    func getUserLocation() {
+        print("Fetching user location...") // Log start of location fetch
+        countriesService.getUserLocation { result in
+            switch result {
+            case .success(let location):
+                DispatchQueue.main.async {
+                    self.selectedCountry = location.country
+                    print("User location fetched successfully: \(location.country)") // Log success with country name
+                }
+            case .failure(let error):
+                print("Error fetching user location: \(error.localizedDescription)") // Log failure with error details
+            }
+        }
+    }
+
     private func validateForm() {
         let isEmailValid = email.contains("@") && email.contains(".")
         showEmailError = !isEmailValid && !email.isEmpty

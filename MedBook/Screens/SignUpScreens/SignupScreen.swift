@@ -55,6 +55,22 @@ struct SignupScreen: View {
                 RequirementText(text: "Contains a special character", isMet: viewModel.passwordRequirements[2])
             }
             
+            VStack(alignment: .leading) {
+                Text("Select Country")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+                
+                Picker("Country", selection: $viewModel.selectedCountry) {
+                    ForEach(viewModel.countries, id: \.self) { country in
+                        Text(country).tag(country)
+                    }
+                }
+                .frame(height: 144)
+                .clipped()
+                .pickerStyle(WheelPickerStyle())
+            }
+            .padding(.vertical, 10)
+            
             Spacer()
             
             AppThemeButton(
