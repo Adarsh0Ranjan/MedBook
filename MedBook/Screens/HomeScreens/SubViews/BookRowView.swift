@@ -92,12 +92,13 @@ struct BookRowView: View {
     // Function to handle adding/removing a bookmark
     private func handleBookmarkAction() {
         if isBookmarked {
-            CoreDataManager.shared.saveBook(book, forUser: "02130adarsh@gmail.com")
+            CoreDataManager.shared
+                .saveBook(book, forUser: GlobalConfig.currentUserEmail)
             isBookmarked = true
             print("Added to bookmarks: \(book.title)")
             
         } else {
-            CoreDataManager.shared.removeBook(book, forUser: "02130adarsh@gmail.com")
+            CoreDataManager.shared.removeBook(book, forUser: GlobalConfig.currentUserEmail)
             isBookmarked = false
             onBookmarkRemoved?()
             print("Removed from bookmarks: \(book.title)")
@@ -106,7 +107,7 @@ struct BookRowView: View {
 
     // Function to check if the book is already bookmarked
     private func checkIfBookmarked() {
-        isBookmarked = CoreDataManager.shared.isBookmarked(book, forUser: "02130adarsh@gmail.com")
+        isBookmarked = CoreDataManager.shared.isBookmarked(book, forUser: GlobalConfig.currentUserEmail)
     }
 }
 

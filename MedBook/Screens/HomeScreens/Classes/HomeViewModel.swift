@@ -114,7 +114,7 @@ class HomeViewModel: ObservableObject {
     
     /// Handles user logout
     func handleLogOut() {
-        UserDefaultsHelper.saveBool(key: .isUserLoggedIn, value: false)
+        UserDefaultsHelper.removeValue(key: .userEmail)
         AppRootView.updateRootViewTo(.landingScreen)
     }
     

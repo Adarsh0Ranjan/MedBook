@@ -71,7 +71,8 @@ class SignupViewModel: SignupViewModelProtocol {
             )
         } else {
             coreDataManager.saveUser(email: email, password: password, country: selectedCountry)
-            UserDefaultsHelper.saveBool(key: .isUserLoggedIn, value: true)
+            UserDefaultsHelper
+                .saveString(key: .userEmail, value: self.email)
             AppRootView.updateRootViewTo(.homeScreen)
         }
     }

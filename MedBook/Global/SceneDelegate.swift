@@ -28,10 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func setupKeyWindow(in scene: UIWindowScene) {
         let window = UIWindow(windowScene: scene)
         
-        let rootView: AppRootView = UserDefaultsHelper.getBool(key: .isUserLoggedIn)
+        let rootView: AppRootView = (UserDefaultsHelper.getString(key: .userEmail) != nil)
         ? AppRootView(rootView: .homeScreen)
         : AppRootView(rootView: .landingScreen)
-        
+
         window.rootViewController = HostingController(rootView: rootView)
         
         self.keyWindow = window

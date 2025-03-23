@@ -9,7 +9,7 @@ import Foundation
 
 enum UserDefaultsKey: String {
     case isUserLoggedIn
-    case username
+    case userEmail
 }
 
 struct UserDefaultsHelper {
@@ -20,5 +20,17 @@ struct UserDefaultsHelper {
     
     static func getBool(key: UserDefaultsKey) -> Bool {
         return UserDefaults.standard.bool(forKey: key.rawValue)
+    }
+    
+    static func saveString(key: UserDefaultsKey, value: String) {
+        UserDefaults.standard.set(value, forKey: key.rawValue)
+    }
+    
+    static func getString(key: UserDefaultsKey) -> String? {
+        return UserDefaults.standard.string(forKey: key.rawValue)
+    }
+    
+    static func removeValue(key: UserDefaultsKey) {
+        UserDefaults.standard.removeObject(forKey: key.rawValue)
     }
 }

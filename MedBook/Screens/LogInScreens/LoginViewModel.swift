@@ -62,7 +62,8 @@ class LoginViewModel: LoginViewModelProtocol {
     func handleLogin() {
         login { success in
             if success {
-                UserDefaultsHelper.saveBool(key: .isUserLoggedIn, value: true)
+                UserDefaultsHelper
+                    .saveString(key: .userEmail, value: self.email)
                 AppRootView.updateRootViewTo(.homeScreen)
             }
         }

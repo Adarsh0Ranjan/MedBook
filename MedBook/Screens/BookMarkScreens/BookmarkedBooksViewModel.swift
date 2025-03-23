@@ -15,6 +15,11 @@ class BookmarkedBooksViewModel: ObservableObject {
     }
     
     func loadBookmarkedBooks() {
-        bookmarkedBooks = CoreDataManager.shared.fetchBooks(forUser: "02130adarsh@gmail.com")
+        if let email = UserDefaultsHelper.getString(key: .userEmail) {
+            bookmarkedBooks = CoreDataManager.shared.fetchBooks(forUser: email)
+        } else {
+            bookmarkedBooks = []
+        }
+
     }
 }
