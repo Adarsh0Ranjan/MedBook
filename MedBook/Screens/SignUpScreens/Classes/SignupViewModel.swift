@@ -45,38 +45,75 @@ class SignupViewModel: SignupViewModelProtocol {
     
     init(countriesService: CountriesServiceProtocol) {
         self.countriesService = countriesService
-        getCountries()
-        getUserLocation()
+        fetchCountriesAndUserLocation()
     }
     
-    func getCountries() {
+    // MARK: - Fetch Countries with Closure
+    func fetchCountries(completion: @escaping ([String]?) -> Void) {
         countriesService.getCountries { result in
             switch result {
             case .success(let response):
-                let countryNames = response.data.values.map { $0.country }
-                DispatchQueue.main.async {
-                    self.countries = countryNames.sorted()
-                }
+                let countryNames = response.data.values.map { $0.country }.sorted()
+                print("Fetched countries successfully")
+                completion(countryNames) // Return the fetched countries
             case .failure(let error):
                 print("Failed to fetch countries: \(error.localizedDescription)")
+                completion(nil) // Return nil on failure
             }
         }
     }
     
-    func getUserLocation() {
-        print("Fetching user location...") // Log start of location fetch
+    // MARK: - Fetch User Location with Closure
+    func fetchUserLocation(completion: @escaping (String?) -> Void) {
+        print("Fetching user location...")
         countriesService.getUserLocation { result in
             switch result {
             case .success(let location):
-                DispatchQueue.main.async {
-                    self.selectedCountry = location.country
-                    print("User location fetched successfully: \(location.country)") // Log success with country name
-                }
+                print("User location fetched successfully: \(location.country)")
+                completion(location.country) // Return the fetched location
             case .failure(let error):
-                print("Error fetching user location: \(error.localizedDescription)") // Log failure with error details
+                print("Error fetching user location: \(error.localizedDescription)")
+                completion(nil) // Return nil on failure
             }
         }
     }
+    
+    // MARK: - Fetch Data in Parallel & Update UI
+    func fetchCountriesAndUserLocation() {
+        print("Fetching countries and user location in parallel...")
+        
+        let dispatchGroup = DispatchGroup()
+        var fetchedCountries: [String]?
+        var fetchedUserLocation: String?
+        
+        dispatchGroup.enter()
+        fetchCountries { countries in
+            fetchedCountries = countries
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.enter()
+        fetchUserLocation { location in
+            fetchedUserLocation = location
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.updateUI(with: fetchedCountries, userLocation: fetchedUserLocation)
+        }
+    }
+    
+    // MARK: - Update UI
+    func updateUI(with countries: [String]?, userLocation: String?) {
+        if let countries = countries {
+            self.countries = countries
+        }
+        if let userLocation = userLocation {
+            self.selectedCountry = userLocation
+        }
+        print("Both countries and user location fetched. UI updated.")
+    }
+
 
     private func validateForm() {
         let isEmailValid = email.contains("@") && email.contains(".")
