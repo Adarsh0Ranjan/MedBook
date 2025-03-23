@@ -10,6 +10,7 @@ import Foundation
 enum UserDefaultsKey: String {
     case isUserLoggedIn
     case userEmail
+    case userLocation
 }
 
 struct UserDefaultsHelper {

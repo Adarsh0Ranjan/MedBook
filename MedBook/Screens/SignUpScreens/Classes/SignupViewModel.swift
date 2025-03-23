@@ -110,29 +110,46 @@ class SignupViewModel: SignupViewModelProtocol {
     
     // MARK: - Fetch Data in Parallel & Update UI
     func fetchCountriesAndUserLocation() {
-        print("Fetching countries and user location in parallel...")
         
-        ActivityIndicator.showActivityIndicator()
-        let dispatchGroup = DispatchGroup()
-        var fetchedCountries: [String]?
-        var fetchedUserLocation: String?
-        
-        dispatchGroup.enter()
-        fetchCountries { countries in
-            fetchedCountries = countries
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        fetchUserLocation { location in
-            fetchedUserLocation = location
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.updateUI(with: fetchedCountries, userLocation: fetchedUserLocation)
+        if let savedLocation = UserDefaultsHelper.getString(key: .userLocation), !savedLocation.isEmpty {
+            print("Using saved location: \(savedLocation)")
+            self.selectedCountry = savedLocation
+            
+            // Fetch only countries since location is already available
+            fetchCountries { countries in
+                DispatchQueue.main.async {
+                    if let countries = countries {
+                        self.countries = countries
+                    }
+                    ActivityIndicator.hideActivityIndicator()
+                }
+            }
+        } else {
+            print("User location not found in UserDefaults. Fetching from API...")
+            
+            ActivityIndicator.showActivityIndicator()
+            let dispatchGroup = DispatchGroup()
+            var fetchedCountries: [String]?
+            var fetchedUserLocation: String?
+            
+            dispatchGroup.enter()
+            fetchCountries { countries in
+                fetchedCountries = countries
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.enter()
+            fetchUserLocation { location in
+                fetchedUserLocation = location
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                self.updateUI(with: fetchedCountries, userLocation: fetchedUserLocation)
+            }
         }
     }
+
     
     // MARK: - Update UI
     func updateUI(with countries: [String]?, userLocation: String?) {
@@ -140,6 +157,7 @@ class SignupViewModel: SignupViewModelProtocol {
             self.countries = countries
         }
         if let userLocation = userLocation {
+            UserDefaultsHelper.saveString(key: .userLocation, value: userLocation)
             self.selectedCountry = userLocation
         }
         
