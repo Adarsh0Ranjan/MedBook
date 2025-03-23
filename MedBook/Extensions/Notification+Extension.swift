@@ -15,9 +15,11 @@ struct NotificationData {
     static let alertType = "alertType"
     static let alertPrimaryButton = "alertPrimaryButton"
     static let alertSecondButton = "alertSecondButton"
+    static let rootViewType = "rootViewType"
 }
 
 extension Notification.Name {
     static let showProgressLoaderNotification = Notification.Name("showProgressLoaderNotification")
     static let showAlertViewNotification = Notification.Name("showAlertViewNotification")
+    static let updateRootViewNotification = Notification.Name("updateRootViewNotification")
 }

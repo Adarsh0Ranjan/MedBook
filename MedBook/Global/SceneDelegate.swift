@@ -9,7 +9,6 @@
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
     var window: UIWindow?
     var keyWindow: UIWindow?
     var progressLoaderWindow: UIWindow?
@@ -29,14 +28,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func setupKeyWindow(in scene: UIWindowScene) {
         let window = UIWindow(windowScene: scene)
         
-        window.rootViewController = HostingController(
-            rootView: LandingScreen()
-                
-        )
+        let rootView: AppRootView = UserDefaultsHelper.getBool(key: .isUserLoggedIn)
+        ? AppRootView(rootView: .homeScreen)
+        : AppRootView(rootView: .landingScreen)
+        
+        window.rootViewController = HostingController(rootView: rootView)
+        
         self.keyWindow = window
         window.makeKeyAndVisible()
     }
-    
+
     func setupProgressLoaderWindow(in scene: UIWindowScene) {
         let progressLoaderWindow = PassThroughWindow(windowScene: scene)
         let progressLoaderViewController = HostingController(
