@@ -20,13 +20,8 @@ struct Book: Codable, Identifiable, Hashable {
     let title: String
     let author_name: [String]?
     let cover_i: Int?
-    let first_publish_year: Int?
-    let edition_count: Int?
     let ratings_average: Double?
     let ratings_count: Int?
-    let subject: [String]?
-    let isbn: [String]?
-    let lccn: [String]?
     
     // Implement Hashable conformance
     func hash(into hasher: inout Hasher) {
@@ -37,6 +32,20 @@ struct Book: Codable, Identifiable, Hashable {
         return lhs.key == rhs.key
     }
 }
+
+extension BookEntity {
+    func toBook() -> Book {
+        return Book(
+            key: self.id ?? UUID().uuidString, // Fallback to a unique ID if nil
+            title: self.title ?? "Unknown Title",
+            author_name: self.author?.components(separatedBy: ", "), // Convert comma-separated authors to an array
+            cover_i: Int(self.coverID),
+            ratings_average: self.ratingAverage,
+            ratings_count: Int(self.ratingCount)
+        )
+    }
+}
+
 
 
 extension Book {

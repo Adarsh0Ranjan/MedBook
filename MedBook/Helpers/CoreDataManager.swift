@@ -59,4 +59,66 @@ class CoreDataManager {
     func isUserExists(email: String) -> Bool {
         return fetchUser(email: email) != nil
     }
+    
+    func saveBook(_ book: Book, forUser email: String) {
+        let bookEntity = BookEntity(context: context)
+        bookEntity.id = book.key
+        bookEntity.title = book.title
+        bookEntity.author = book.author_name?.first
+        bookEntity.coverID = Int64(book.cover_i ?? 0)
+        bookEntity.ratingAverage = book.ratings_average ?? 0.0
+        bookEntity.ratingCount = Int64(book.ratings_count ?? 0)
+        bookEntity.userEmail = email
+        
+        do {
+            try context.save()
+            print("Book saved successfully!")
+        } catch {
+            print("Failed to save book: \(error.localizedDescription)")
+        }
+    }
+    
+    // Fetch Bookmarks for a User
+    func fetchBooks(forUser email: String) -> [Book] {
+        let request: NSFetchRequest<BookEntity> = BookEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "userEmail == %@", email)
+        
+        do {
+            let bookEntities = try context.fetch(request)
+            return bookEntities.map { $0.toBook() } // Convert to Book struct
+        } catch {
+            print("Failed to fetch books: \(error.localizedDescription)")
+            return []
+        }
+    }
+
+    
+    // Check if a Book is Bookmarked
+    func isBookmarked(_ book: Book, forUser email: String) -> Bool {
+        let request: NSFetchRequest<BookEntity> = BookEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@ AND userEmail == %@", book.key, email)
+        
+        do {
+            return try context.fetch(request).count > 0
+        } catch {
+            print("Failed to check bookmark status: \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    // Remove Book from Bookmarks
+    func removeBook(_ book: Book, forUser email: String) {
+        let request: NSFetchRequest<BookEntity> = BookEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@ AND userEmail == %@", book.key, email)
+        
+        do {
+            if let bookEntity = try context.fetch(request).first {
+                context.delete(bookEntity)
+                try context.save()
+                print("Book removed successfully!")
+            }
+        } catch {
+            print("Failed to remove book: \(error.localizedDescription)")
+        }
+    }
 }

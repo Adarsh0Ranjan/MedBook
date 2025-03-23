@@ -35,18 +35,18 @@ class HomeViewModel: ObservableObject {
     var filteredBooks: [Book] {
         var sortedBooks = books
         
-//        switch selectedSortOption {
-//        case .title:
-//            sortedBooks.sort { $0.title < $1.title }
-//        case .average:
-//            sortedBooks.sort { ($0.averageRating ?? 0) > ($1.averageRating ?? 0) }
-//        case .hits:
-//            sortedBooks.sort { ($0.hits ?? 0) > ($1.hits ?? 0) }
-//        }
-//        
+        switch selectedSortOption {
+        case .title:
+            sortedBooks.sort { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+        case .average:
+            sortedBooks.sort { ($0.ratings_average ?? 0) > ($1.ratings_average ?? 0) }
+        case .hits:
+            sortedBooks.sort { ($0.ratings_count ?? 0) > ($1.ratings_count ?? 0) }
+        }
+        
         return sortedBooks
     }
-    
+
     /// Fetch books with pagination support
     func fetchBooks(query: String, isPaginating: Bool = false) {
         guard !isLoading, !isLastPage else { return }

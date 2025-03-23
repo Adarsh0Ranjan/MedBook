@@ -30,5 +30,6 @@ struct SortOptionsView: View {
             }
         }
         .padding(.horizontal)
+        .frame(maxWidth: .infinity)
     }
 }

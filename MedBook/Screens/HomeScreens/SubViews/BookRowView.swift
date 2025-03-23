@@ -91,14 +91,49 @@ struct BookRowView: View {
     // Function to handle adding/removing a bookmark
     private func handleBookmarkAction() {
         if isBookmarked {
+            CoreDataManager.shared.saveBook(book, forUser: "02130adarsh@gmail.com")
+            isBookmarked = true
             print("Added to bookmarks: \(book.title)")
+            
         } else {
+            CoreDataManager.shared.removeBook(book, forUser: "02130adarsh@gmail.com")
+            isBookmarked = false
             print("Removed from bookmarks: \(book.title)")
         }
     }
-    
+
     // Function to check if the book is already bookmarked
     private func checkIfBookmarked() {
-        // You can check from UserDefaults or CoreData if the book is bookmarked
+        isBookmarked = CoreDataManager.shared.isBookmarked(book, forUser: "02130adarsh@gmail.com")
     }
 }
+
+struct BookmarkedBooksView: View {
+    @StateObject var viewModel = BookmarkedBooksViewModel()
+    
+    var body: some View {
+        NavigationView {
+            List(viewModel.bookmarkedBooks, id: \..key) { book in
+                BookRowView(book: book)
+            }
+            .navigationTitle("Bookmarked Books")
+        }
+    }
+    
+}
+
+import SwiftUI
+import Combine
+
+class BookmarkedBooksViewModel: ObservableObject {
+    @Published var bookmarkedBooks: [Book] = []
+    
+    init() {
+        loadBookmarkedBooks()
+    }
+    
+    func loadBookmarkedBooks() {
+        bookmarkedBooks = CoreDataManager.shared.fetchBooks(forUser: "02130adarsh@gmail.com")
+    }
+}
+

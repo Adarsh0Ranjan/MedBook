@@ -29,6 +29,7 @@ struct HomeView: View {
                 
                 Spacer()
             }
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
 }

@@ -10,12 +10,16 @@
 		295B0D692D8FCC9600FA26B3 /* MedBook.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 295B0D672D8FCC9600FA26B3 /* MedBook.xcdatamodeld */; };
 		295B0D6C2D8FCD3900FA26B3 /* UserEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B0D6B2D8FCD3900FA26B3 /* UserEntity+CoreDataProperties.swift */; };
 		295B0D6D2D8FCD3900FA26B3 /* UserEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B0D6A2D8FCD3900FA26B3 /* UserEntity+CoreDataClass.swift */; };
+		295B0E6F2D90577700FA26B3 /* BookEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B0E6D2D90577700FA26B3 /* BookEntity+CoreDataClass.swift */; };
+		295B0E702D90577700FA26B3 /* BookEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295B0E6E2D90577700FA26B3 /* BookEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		295B0D682D8FCC9600FA26B3 /* MedBook.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MedBook.xcdatamodel; sourceTree = "<group>"; };
 		295B0D6A2D8FCD3900FA26B3 /* UserEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		295B0D6B2D8FCD3900FA26B3 /* UserEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		295B0E6D2D90577700FA26B3 /* BookEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		295B0E6E2D90577700FA26B3 /* BookEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BookEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		29E866262D8D22FC00F4129D /* MedBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -54,6 +58,8 @@
 		29E8661D2D8D22FC00F4129D = {
 			isa = PBXGroup;
 			children = (
+				295B0E6D2D90577700FA26B3 /* BookEntity+CoreDataClass.swift */,
+				295B0E6E2D90577700FA26B3 /* BookEntity+CoreDataProperties.swift */,
 				295B0D6A2D8FCD3900FA26B3 /* UserEntity+CoreDataClass.swift */,
 				295B0D6B2D8FCD3900FA26B3 /* UserEntity+CoreDataProperties.swift */,
 				295B0D672D8FCC9600FA26B3 /* MedBook.xcdatamodeld */,
@@ -145,6 +151,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				295B0D6C2D8FCD3900FA26B3 /* UserEntity+CoreDataProperties.swift in Sources */,
+				295B0E6F2D90577700FA26B3 /* BookEntity+CoreDataClass.swift in Sources */,
+				295B0E702D90577700FA26B3 /* BookEntity+CoreDataProperties.swift in Sources */,
 				295B0D6D2D8FCD3900FA26B3 /* UserEntity+CoreDataClass.swift in Sources */,
 				295B0D692D8FCC9600FA26B3 /* MedBook.xcdatamodeld in Sources */,
 			);
