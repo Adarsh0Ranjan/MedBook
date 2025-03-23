@@ -55,10 +55,10 @@ class SignupViewModel: SignupViewModelProtocol {
             case .success(let response):
                 let countryNames = response.data.values.map { $0.country }.sorted()
                 print("Fetched countries successfully")
-                completion(countryNames) // Return the fetched countries
+                completion(countryNames)
             case .failure(let error):
                 print("Failed to fetch countries: \(error.localizedDescription)")
-                completion(nil) // Return nil on failure
+                completion(nil)
             }
         }
     }
@@ -70,10 +70,10 @@ class SignupViewModel: SignupViewModelProtocol {
             switch result {
             case .success(let location):
                 print("User location fetched successfully: \(location.country)")
-                completion(location.country) // Return the fetched location
+                completion(location.country)
             case .failure(let error):
                 print("Error fetching user location: \(error.localizedDescription)")
-                completion(nil) // Return nil on failure
+                completion(nil)
             }
         }
     }
