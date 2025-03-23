@@ -82,6 +82,7 @@ class SignupViewModel: SignupViewModelProtocol {
     func fetchCountriesAndUserLocation() {
         print("Fetching countries and user location in parallel...")
         
+        ActivityIndicator.showActivityIndicator()
         let dispatchGroup = DispatchGroup()
         var fetchedCountries: [String]?
         var fetchedUserLocation: String?
@@ -111,6 +112,8 @@ class SignupViewModel: SignupViewModelProtocol {
         if let userLocation = userLocation {
             self.selectedCountry = userLocation
         }
+        
+        ActivityIndicator.hideActivityIndicator()
         print("Both countries and user location fetched. UI updated.")
     }
 

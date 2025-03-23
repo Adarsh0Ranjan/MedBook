@@ -12,6 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var keyWindow: UIWindow?
+    var progressLoaderWindow: UIWindow?
 
     func scene(
         _ scene: UIScene,
@@ -20,6 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         setupKeyWindow(in: windowScene)
+        setupProgressLoaderWindow(in: windowScene)
     }
     
     func setupKeyWindow(in scene: UIWindowScene) {
@@ -33,6 +35,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
     }
     
+    func setupProgressLoaderWindow(in scene: UIWindowScene) {
+        let progressLoaderWindow = PassThroughWindow(windowScene: scene)
+        let progressLoaderViewController = HostingController(
+            rootView: ActivityIndicator()
+        )
+        progressLoaderViewController.view.backgroundColor = .clear
+        progressLoaderWindow.rootViewController = progressLoaderViewController
+        progressLoaderWindow.isHidden = false
+        self.progressLoaderWindow = progressLoaderWindow
+    }
     
 
     func sceneDidDisconnect(_ scene: UIScene) {
