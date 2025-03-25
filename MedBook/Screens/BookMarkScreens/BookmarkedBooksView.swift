@@ -19,6 +19,7 @@ struct BookmarkedBooksView: View {
             }
             .navigationTitle("Bookmarked Books")
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

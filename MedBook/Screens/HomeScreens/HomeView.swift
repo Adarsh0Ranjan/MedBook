@@ -34,5 +34,6 @@ struct HomeView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
         }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
