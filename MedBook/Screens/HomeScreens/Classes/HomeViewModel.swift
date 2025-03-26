@@ -48,21 +48,32 @@ class HomeViewModel: ObservableObject {
     }
 
     /// Fetch books with pagination support
+    private var latestQuery: String = ""
+    
     func fetchBooks(query: String, isPaginating: Bool = false) {
         guard !isLoading, !isLastPage else { return }
         
         isLoading = true
         errorMessage = nil
         
+        // Track the latest query before making the API request
+        latestQuery = query
+        
         bookService.searchBooks(query: query, limit: limit, offset: currentOffset) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.isLoading = false
                 
+                // Ignore responses for outdated queries
+                if query != self.latestQuery {
+                    print("Ignoring outdated response for query: \(query)")
+                    return
+                }
+                
                 switch result {
                 case .success(let response):
                     let newBooks = response.docs
-                    print("Fetched Books: \(newBooks)") // Print the fetched books
+                    print("Fetched Books with key \(self.searchText) \(query)")
                     
                     if newBooks.isEmpty {
                         self.isLastPage = true
@@ -80,12 +91,14 @@ class HomeViewModel: ObservableObject {
         }
     }
 
+
     
     /// Resets books and starts a new search
     func resetBooks(query: String) {
         books.removeAll()
         currentOffset = 0
         isLastPage = false
+        isLoading = false
         fetchBooks(query: query)
     }
     
@@ -101,7 +114,7 @@ class HomeViewModel: ObservableObject {
             return
         }
         
-        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [weak self] _ in
             print("Searching for books with title: \(trimmedQuery)")
             self?.resetBooks(query: trimmedQuery)
         }

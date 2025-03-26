@@ -24,6 +24,9 @@ struct BooksListView: View {
             if viewModel.isLoading {
                 ProgressView()
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .onAppear(perform: {
+                        print("Call coming on appear")
+                    })
             }
         }
         .listStyle(PlainListStyle())
