@@ -74,3 +74,63 @@ extension NetworkHelperProtocol {
         }.resume()
     }
 }
+
+extension NetworkHelperProtocol {
+    
+    func uploadImage(endpoint: Endpoint, image: UIImage, imageParamName: String = "file", completion: @escaping (Result<Data, Error>) -> Void) {
+        
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(.failure(NSError(domain: "Image Conversion Error", code: 0)))
+            return
+        }
+        
+        var components = URLComponents(string: endpoint.path)
+        guard let url = components?.url else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = endpoint.method.rawValue
+        
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        // Build multipart body
+        var body = Data()
+        body.append("--\(boundary)\r\n")
+        body.append("Content-Disposition: form-data; name=\"\(imageParamName)\"; filename=\"image.jpg\"\r\n")
+        body.append("Content-Type: image/jpeg\r\n\r\n")
+        body.append(imageData)
+        body.append("\r\n--\(boundary)--\r\n")
+        
+        request.httpBody = body
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No Data", code: 0)))
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(.success(data))
+            }
+            
+        }.resume()
+    }
+}
+
+extension Data {
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
+    }
+}
+
